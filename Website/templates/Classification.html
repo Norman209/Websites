@@ -12,9 +12,10 @@
 <script type="text/javascript">
 
     function copy_and_paste() {
-        let copy_text = document.getElementById('copy_paste_textbox'); // id of the textbox
+        let copy_text = document.getElementById('code_block'); // id of the textbox
         copy_text.select();
         navigator.clipboard.writeText(copy_text.value);
+        //document.execCommand("copy");
         alert('copy and pasted augmentation code');
     }
 
@@ -83,11 +84,8 @@
     function show_copy_and_paste_checkbox() {
         check_box_element = document.getElementById('copy_paste_div')
         check_box_element.style.display = 'block'
-        text_box=document.getElementById('copy_paste_textbox')
-        text_box.value=
-        `for i in range 100:
-            print('hello world')
-            #this is a comment`
+        text_box = document.getElementById('code_block')
+        text_box.value = "for i in range(100):\n" +"    print('hello world')\n" + "    #this is a comment";
     }
 </script>
 
@@ -148,11 +146,13 @@
         <button onclick="show_copy_and_paste_checkbox();">Submit</button>
         <br><br>
         <div id="copy_paste_div" style='display:none'>
-            <input type=" text" id="copy_paste_textbox">
+            <!--<input type="text" id="copy_paste_textbox">-->
             <button type="submit" onclick="copy_and_paste();">Copy and paste code</button>
+            <br>
+            <textarea id="code_block" name="code_block" rows="100" cols="100">
         </div>
         <!-- make it so that the path of the directory that needs to be augmented is given-->
     </div>
 </body>
 
-</html>
+</html>  
