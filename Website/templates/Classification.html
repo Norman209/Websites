@@ -10,83 +10,108 @@
 
 <!-- all JS functions here-->
 <script type="text/javascript">
+    class display_popups {
+        rotate_click_checkbox() {
+            let pop_up = document.getElementById('rotate_pop_up')
+            let check_box = document.getElementById('Rotate_checkbox')
+            if (check_box.checked == true) {
+                pop_up.style.display = 'block';
+                console.log('checked checkbox')
+            }
+            if (check_box.checked == false) {
+                pop_up.style.display = 'none';
+                console.log('unchecked checkbox')
+            }
+        }
+        blur_click_checkbox() {
+            let pop_up = document.getElementById('blur_pop_up')
+            let check_box = document.getElementById('blur_checkbox')
+            if (check_box.checked == true) {
+                pop_up.style.display = 'block';
+                console.log('checked checkbox')
+            }
+            if (check_box.checked == false) {
+                pop_up.style.display = 'none';
+                console.log('unchecked checkbox')
+            }
+        }
+        vertical_or_horizontal_flip_click_checkbox() {
+            console.log('Flip pop up method CALLED')
+            let flip_pop_up = document.getElementById('Flip_pop_up');
+            if (document.getElementById('Flip_check_box').checked == true) {
+                flip_pop_up.style.display = 'block';
+                console.log('checked checkbox')
+            }
+            if (document.getElementById('Flip_check_box').checked == false) {
+                flip_pop_up.style.display = 'none';
+                console.log('unchecked checkbox')
+            }
 
-    function copy_and_paste() {
-        let copy_text = document.getElementById('code_block'); // id of the textbox
-        copy_text.select();
-        navigator.clipboard.writeText(copy_text.value);
-        //document.execCommand("copy");
-        alert('copy and pasted augmentation code');
-    }
-
-    function vertical_or_horizontal_flip_click_checkbox() {
-        flip_pop_up = document.getElementById('Flip_pop_up');
-        if (document.getElementById('Flip_check_box').checked == true) {
-            flip_pop_up.style.display = 'block';
-            console.log('checked checkbox')
-        }
-        if (document.getElementById('Flip_check_box').checked == false) {
-            flip_pop_up.style.display = 'none';
-            console.log('unchecked checkbox')
         }
 
-    }
+        rotate_90_click_checkbox() {
+            let rotate_90_box = document.getElementById('90° rotate_check_box')
+            let rotate_90_pop_up = document.getElementById('90_rotate_popup')
+            if (rotate_90_box.checked == true) {
+                rotate_90_pop_up.style.display = 'block';
+                console.log('checked checkbox')
+            }
+            if (rotate_90_box.checked == false) {
+                rotate_90_pop_up.style.display = 'none';
+                console.log('unchecked checkbox')
+            }
+        }
 
-    function rotate_90_click_checkbox() {
-        rotate_90_box = document.getElementById('90° rotate_check_box')
-        rotate_90_pop_up = document.getElementById('90_rotate_popup')
-        if (rotate_90_box.checked == true) {
-            rotate_90_pop_up.style.display = 'block';
-            console.log('checked checkbox')
-        }
-        if (rotate_90_box.checked == false) {
-            rotate_90_pop_up.style.display = 'none';
-            console.log('unchecked checkbox')
+        crop_click_checkbox() {
+            let pop_up = document.getElementById('crop_pop_up')
+            let check_box = document.getElementById('Crop_checkbox')
+            if (check_box.checked == true) {
+                pop_up.style.display = 'block';
+                console.log('checked checkbox')
+            }
+            if (check_box.checked == false) {
+                pop_up.style.display = 'none';
+                console.log('unchecked checkbox')
+            }
         }
     }
+    class range_input_scripts {
 
-    function crop_click_checkbox() {
-        pop_up = document.getElementById('crop_pop_up')
-        check_box = document.getElementById('Crop_checkbox')
-        if (check_box.checked == true) {
-            pop_up.style.display = 'block';
-            console.log('checked checkbox')
-        }
-        if (check_box.checked == false) {
-            pop_up.style.display = 'none';
-            console.log('unchecked checkbox')
-        }
-    }
-    function rotate_click_checkbox() {
-        pop_up = document.getElementById('rotate_pop_up')
-        check_box = document.getElementById('Rotate_checkbox')
-        if (check_box.checked == true) {
-            pop_up.style.display = 'block';
-            console.log('checked checkbox')
-        }
-        if (check_box.checked == false) {
-            pop_up.style.display = 'none';
-            console.log('unchecked checkbox')
+        update_probabilities() {
+            let sliders = ['Flip_probability', 'Crop_probability'];
+            let i = 0
+            while (i < sliders.length) { //WORK ON THIS WHILE LOOP
+                let slider = document.getElementById(sliders[i]);
+                let show_slider = document.getElementById(`show_${sliders[i]}`)
+                show_slider.innerText = slider.value
+                i++
+
+            }
         }
     }
-    function blur_click_checkbox() {
-        pop_up = document.getElementById('blur_pop_up')
-        check_box = document.getElementById('blur_checkbox')
-        if (check_box.checked == true) {
-            pop_up.style.display = 'block';
-            console.log('checked checkbox')
+    class copy_paste_code_scripts {
+        copy_and_paste() {
+            let copy_text = document.getElementById('code_block'); // id of the textbox
+            copy_text.select();
+            navigator.clipboard.writeText(copy_text.value);
+            //document.execCommand("copy");
+            alert('copy and pasted augmentation code');
         }
-        if (check_box.checked == false) {
-            pop_up.style.display = 'none';
-            console.log('unchecked checkbox')
+        show_copy_and_paste_checkbox() {
+            let aug_string = "import albumentations as A\n" + "import cv2\n" +
+                "transform = A.Compose([\n" + "A.RandomCrop(width=256, height=256),\n" +
+                "A.HorizontalFlip(p=0.5),\n" +
+                "A.RandomBrightnessContrast(p=0.2)])\n";
+            let check_box_element = document.getElementById('copy_paste_div');
+            check_box_element.style.display = 'block';
+            let text_box = document.getElementById('code_block');
+            text_box.value = aug_string;
         }
     }
-    function show_copy_and_paste_checkbox() {
-        check_box_element = document.getElementById('copy_paste_div')
-        check_box_element.style.display = 'block'
-        text_box = document.getElementById('code_block')
-        text_box.value = "for i in range(100):\n" +"    print('hello world')\n" + "    #this is a comment";
-    }
+    let display_popups_methods = new display_popups();
+    let copy_paste_code_methods = new copy_paste_code_scripts();
+    let range_input_methods = new range_input_scripts();
+
 </script>
 
 <body>
@@ -94,40 +119,79 @@
         <label for="absolute_path">Image directory absolute path</label>
         <input type="text" id="absolute_path" name="absolute_path" placeholder="absolute_path"><br>
 
+        <!-- <input id="Flip_probability" type="range" min="0" max="100" step="any" /><br>  EXAMPLE OF SLIDER  -->
+
         <div id="Flip">
             <label for="Flip">Flip</label>
             <input type="checkbox" value="Flip" name='Flip' id="Flip_check_box"
-                onclick="vertical_or_horizontal_flip_click_checkbox();">
+                onclick="display_popups_methods.vertical_or_horizontal_flip_click_checkbox();">
             <div id="Flip_pop_up" style="display:none">
-                vertical,horizontal, or both?
-                <br>Enter probability of occuring (0-100%)
+                <label>vertical</label>
+                <input type='checkbox'>
+                <br>
+                <label>horizontal</label>
+                <input type="checkbox">
+                <br>
+                <label>Enter probability of occuring (0-100%)</label>
+                <input id="Flip_probability" type="range" min="0" max="100" step="1"
+                    oninput="range_input_methods.update_probabilities();">
+                <b id='show_Flip_probability'>50</b>
             </div>
         </div>
         <br>
         <div id="90° rotate">
             <label for="90° rotate">90° rotate</label>
             <input type="checkbox" value="90° rotate" id="90° rotate_check_box" name='90° rotate'
-                onclick="rotate_90_click_checkbox();">
+                onclick="display_popups_methods.rotate_90_click_checkbox();">
             <div id="90_rotate_popup" style="display:none">
-                enter probability of occuring (0-100%)
+                <label>enter probability of occuring (0-100%)</label>
+                <input id="Crop_probability" type="range" min="0" max="100" step="1"
+                    oninput="range_input_methods.update_probabilities();">
+                <b id="show_Crop_probability">50</b>
+
             </div>
         </div>
         <br>
         <div id="Crop">
             <label for="Crop">Crop</label>
-            <input type="checkbox" value="Crop" id="Crop_checkbox" name='Crop' onclick="crop_click_checkbox();">
+            <input type="checkbox" value="Crop" id="Crop_checkbox" name='Crop'
+                onclick="display_popups_methods.crop_click_checkbox();">
             <div id="crop_pop_up" style="display:none">
-                Enter minimum and max % of image cropped.
+
+                <label>Enter minimum and max % of image cropped.</label>
+
+
+                <label>Enter minimum and max % of image cropped.</label>
+                <input id="Crop_probability" type="range" min="0" max="100" step="1"
+                    oninput="range_input_methods.update_probabilities();">
+
                 <br>Enter probability of occuring (0-100%)
             </div>
         </div>
         <br>
         <div id='Rotate'>
             <label for="Rotate">Rotate</label> <!-- make user pick rotation range-->
-            <input type="checkbox" value="Rotate" id="Rotate_checkbox" name='Rotate' onclick="rotate_click_checkbox();">
+            <input type="checkbox" value="Rotate" id="Rotate_checkbox" name='Rotate'
+                onclick="display_popups_methods.rotate_click_checkbox();">
             <div id="rotate_pop_up" style="display:none">
-                Enter rotation limit (slider)
-                <br>Enter probability of occuring (0-100%)
+
+                <div id="Rotate_limits">
+                    <label>Enter rotation limit (slider)</label>
+                    <input id="Rotate_probability" type="range" min="0" max="100" step="1"
+                        oninput="range_input_methods.update_probabilities();">
+
+                    <input id="Rotate_probability" type="range" min="0" max="100" step="1"
+                        oninput="range_input_methods.update_probabilities();">
+                </div>
+
+
+                <div id="rotate_probabilities">
+                    <label>Enter probability of occuring (0-100%)</label>
+                    <input id="Rotate_probability" type="range" min="0" max="100" step="1"
+                        oninput="range_input_methods.update_probabilities();">
+                    <b id="show_Rotate_probability"></b>
+                </div>
+
             </div>
         </div>
 
@@ -135,7 +199,7 @@
         <div id="blur">
             <label for="blur">blur</label>
             <input type="checkbox" value="blur_checkbox" id="blur_checkbox" name="blur_checkbox"
-                onclick="blur_click_checkbox();">
+                onclick="display_popups_methods.blur_click_checkbox();">
             <div id="blur_pop_up" style="display:none">
                 enter blur limit
                 <br>Enter probability of occuring (0-100%)
@@ -143,16 +207,16 @@
 
         </div>
 
-        <button onclick="show_copy_and_paste_checkbox();">Submit</button>
+        <button onclick="copy_paste_code_methods.show_copy_and_paste_checkbox();">Submit</button>
         <br><br>
         <div id="copy_paste_div" style='display:none'>
             <!--<input type="text" id="copy_paste_textbox">-->
-            <button type="submit" onclick="copy_and_paste();">Copy and paste code</button>
+            <button type="submit" onclick="copy_paste_code_methods.copy_and_paste();">Copy and paste code</button>
             <br>
-            <textarea id="code_block" name="code_block" rows="100" cols="100">
+            <textarea id="code_block" name="code_block" rows="10" cols="10"></textarea>
         </div>
         <!-- make it so that the path of the directory that needs to be augmented is given-->
     </div>
 </body>
 
-</html>  
+</html>
