@@ -78,7 +78,7 @@
     class range_input_scripts {
 
         update_probabilities() {
-            let sliders = ['Flip_probability', 'Crop_probability'];
+            let sliders = ['Flip_probability', 'rotate_90_probability', 'crop_probability'];
             let i = 0
             while (i < sliders.length) { //WORK ON THIS WHILE LOOP
                 let slider = document.getElementById(sliders[i]);
@@ -87,6 +87,20 @@
                 i++
 
             }
+        }
+        update_crop_percent_of_image_cropped() {
+            let min_range_id = 'min_cropped'
+            let max_range_id = 'max_cropped'
+            let min_text_id = 'crop_min_percent'
+            let max_text_id = 'crop_max_percent'
+
+            let max_range_element = document.getElementById(max_range_id)
+            let min_range_element = document.getElementById(min_range_id)
+            let min_text_element = document.getElementById(min_text_id)
+            let max_text_element = document.getElementById(max_text_id)
+            min_text_element.innerText = min_range_element.value
+            max_text_element.innerText = max_range_element.value
+
         }
     }
     class copy_paste_code_scripts {
@@ -111,6 +125,7 @@
     let display_popups_methods = new display_popups();
     let copy_paste_code_methods = new copy_paste_code_scripts();
     let range_input_methods = new range_input_scripts();
+
 
 </script>
 
@@ -145,27 +160,32 @@
                 onclick="display_popups_methods.rotate_90_click_checkbox();">
             <div id="90_rotate_popup" style="display:none">
                 <label>enter probability of occuring (0-100%)</label>
-                <input id="Crop_probability" type="range" min="0" max="100" step="1"
+                <input id="rotate_90_probability" type="range" min="0" max="100" step="1"
                     oninput="range_input_methods.update_probabilities();">
-                <b id="show_Crop_probability">50</b>
-
+                <b id="show_rotate_90_probability">50</b>
             </div>
         </div>
         <br>
         <div id="Crop">
             <label for="Crop">Crop</label>
             <input type="checkbox" value="Crop" id="Crop_checkbox" name='Crop'
-                onclick="display_popups_methods.crop_click_checkbox();">
+                onclick="display_popups_methods.crop_click_checkbox();"> <b></b>
             <div id="crop_pop_up" style="display:none">
 
-                <label>Enter minimum and max % of image cropped.</label>
+                <label>Enter minimum % of image cropped.</label>
+                <input id="min_cropped" type="range" min="0" max="100" step="1"
+                    oninput="range_input_methods.update_crop_percent_of_image_cropped();">
+                <b id="crop_min_percent"></b>
+                <br>
+                <label>Enter max % of image cropped.</label>
+                <input id="max_cropped" type="range" min="0" max="100" step="1"
+                    oninput="range_input_methods.update_crop_percent_of_image_cropped();">
+                <b id="crop_max_percent"></b>
 
-
-                <label>Enter minimum and max % of image cropped.</label>
-                <input id="Crop_probability" type="range" min="0" max="100" step="1"
+                <br><label>Enter probability of occuring (0-100%)</label>
+                <input id="crop_probability" type="range" min="0" max="100" step="1"
                     oninput="range_input_methods.update_probabilities();">
-
-                <br>Enter probability of occuring (0-100%)
+                <b id="show_crop_probability"></b>
             </div>
         </div>
         <br>
