@@ -16,52 +16,12 @@
 
 <!-- all JS functions here-->
 
-
 <script type="text/javascript">
-    function fetch_function(file){
-        fetch(`download/${file}`, { method: "GET"}); 
-        console.log('FETCH FUNCTION ACTIVATED');}
     function show_download_href(datasetid) {
         let download_href = document.getElementById('download_tag');
         download_href.innerText='download here'
         download_href.href=`download/${datasetid}.zip`
         }
-    function find_folder_upload_value() {
-        let dataset = document.getElementById("folder_upload_id").files
-        console.log('dataset:',dataset)
-        if (dataset.length > 0) {
-            let id = "id" + Math.random().toString(16).slice(2)
-            let starting_id = 'start'
-            let end_id = 'end'
-            console.log('id:', id)
-            i = 0
-            while (i < dataset.length) {
-                console.log('image:', dataset[i])
-                let formData = new FormData();
-
-                //starting image has a starting id indicating start
-                if (i === 0) {
-                    formData.append('start_id', starting_id)
-                }
-
-                // adding image to form
-                formData.append("image", dataset[i]);
-
-                //adding id assigned to dataset
-                formData.append("id", id);
-                i++
-
-                //ending image has a ending id indicating end
-                if (i === dataset.length) {
-                    formData.append('end_id', end_id)
-                }
-                fetch('/Classification', { method: "POST", body: formData });
-                if (i === dataset.length) {
-                    show_download_href(id);
-                }
-            }
-        }
-    }
     class display_popups {
         rotate_click_checkbox() {
             let pop_up = document.getElementById('rotate_pop_up');
@@ -180,15 +140,7 @@
 </script>
 
 <!-- how to send each file from here to flask server?-->
-<form enctype="multipart/form-data">
-    <div>
-        <label for="folder">Choose file to upload</label>
-        <input type="file" name='folder' id="folder_upload_id" multiple directory webkitdirectory mozdirectory />
-</form>
-<br>
-<input type="button" onclick="find_folder_upload_value();">choo</input> <!--oninput="find_folder_upload_value();"-->
-<br>
-<!-- download the dataset -->
+
 
 <a href='URL for GET request here (ex. google.com/)' id="download_tag" download></a>
 
@@ -297,6 +249,22 @@
     </div>
     <!-- make it so that the path of the directory that needs to be augmented is given-->
 </div>
+
+<form method="POST" action='/upload' class="dropzone dz-clickable" 
+      id="dropper" enctype="multipart/form-data">
+</form>
+
+<script type="application/javascript">
+    Dropzone.options.dropper = {
+        paramName: 'file',
+        chunking: true,
+        forceChunking: true,
+        url: '/upload',
+        maxFilesize: 100000, // megabytes
+        chunkSize: 1000000 // bytes
+    }
+</script>
+
 </body>
 
 </html>
