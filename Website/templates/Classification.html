@@ -17,11 +17,12 @@
 <!-- all JS functions here-->
 
 <script type="text/javascript">
-    function show_download_href(datasetid) {
+
+    function close_download_tag() {
         let download_href = document.getElementById('download_tag');
-        download_href.innerText='download here'
-        download_href.href=`download/${datasetid}.zip`
-        }
+        download_href.innerText = ''
+        //download_href.href = ''
+    }
     class display_popups {
         rotate_click_checkbox() {
             let pop_up = document.getElementById('rotate_pop_up');
@@ -86,6 +87,7 @@
                 console.log('unchecked checkbox')
             }
         }
+
     }
     class range_input_scripts {
 
@@ -115,6 +117,7 @@
 
         }
     }
+    let file_id;
     class copy_paste_code_scripts {
         copy_and_paste() {
             let copy_text = document.getElementById('code_block'); // id of the textbox
@@ -122,7 +125,9 @@
             navigator.clipboard.writeText(copy_text.value);
             //document.execCommand("copy");
             alert('copy and pasted augmentation code');
+
         }
+
         show_copy_and_paste_checkbox() {
             let aug_string = "import albumentations as A\n" + "import cv2\n" +
                 "transform = A.Compose([\n" + "A.RandomCrop(width=256, height=256),\n" +
@@ -132,6 +137,8 @@
             check_box_element.style.display = 'block';
             let text_box = document.getElementById('code_block');
             text_box.value = aug_string;
+            file_id = "id" + Math.random().toString(16).slice(2);
+            // sending over
         }
     }
     let display_popups_methods = new display_popups();
@@ -141,130 +148,192 @@
 
 <!-- how to send each file from here to flask server?-->
 
-
-<a href='URL for GET request here (ex. google.com/)' id="download_tag" download></a>
-
-<div id='augmentation'>
-    <label for="absolute_path">Image directory absolute path</label>
-    <input type="text" id="absolute_path" name="absolute_path" placeholder="absolute_path"><br>
-
-    <!-- <input id="Flip_probability" type="range" min="0" max="100" step="any" /><br>  EXAMPLE OF SLIDER  -->
-    <div id="Flip">
-        <label for="Flip">Flip</label>
-        <input type="checkbox" value="Flip" name='Flip' id="Flip_check_box"
-            onclick="display_popups_methods.vertical_or_horizontal_flip_click_checkbox();">
-        <div id="Flip_pop_up" style="display:none">
-            <label>vertical</label>
-            <input type='checkbox'>
-            <br>
-            <label>horizontal</label>
-            <input type="checkbox">
-            <br>
-            <label>Enter probability of occuring (0-100%)</label>
-            <input id="Flip_probability" type="range" min="0" max="100" step="1"
-                oninput="range_input_methods.update_probabilities();">
-            <b id='show_Flip_probability'>50</b>
-        </div>
-    </div>
-    <br>
-    <div id="90° rotate">
-        <label for="90° rotate">90° rotate</label>
-        <input type="checkbox" value="90° rotate" id="90° rotate_check_box" name='90° rotate'
-            onclick="display_popups_methods.rotate_90_click_checkbox();">
-        <div id="90_rotate_popup" style="display:none">
-            <label>enter probability of occuring (0-100%)</label>
-            <input id="rotate_90_probability" type="range" min="0" max="100" step="1"
-                oninput="range_input_methods.update_probabilities();">
-            <b id="show_rotate_90_probability">50</b>
-        </div>
-    </div>
-    <br>
-    <div id="Crop">
-        <label for="Crop">Crop</label>
-        <input type="checkbox" value="Crop" id="Crop_checkbox" name='Crop'
-            onclick="display_popups_methods.crop_click_checkbox();"> <b></b>
-        <div id="crop_pop_up" style="display:none">
-
-            <label>Enter minimum % of image cropped.</label>
-            <input id="min_cropped" type="range" min="0" max="100" step="1"
-                oninput="range_input_methods.update_crop_percent_of_image_cropped();">
-            <b id="crop_min_percent"></b>
-            <br>
-            <label>Enter max % of image cropped.</label>
-            <input id="max_cropped" type="range" min="0" max="100" step="1"
-                oninput="range_input_methods.update_crop_percent_of_image_cropped();">
-            <b id="crop_max_percent"></b>
-
-            <br><label>Enter probability of occuring (0-100%)</label>
-            <input id="crop_probability" type="range" min="0" max="100" step="1"
-                oninput="range_input_methods.update_probabilities();">
-            <b id="show_crop_probability"></b>
-        </div>
-    </div>
-    <br>
-    <div id='Rotate'>
-        <label for="Rotate">Rotate</label> <!-- make user pick rotation range-->
-        <input type="checkbox" value="Rotate" id="Rotate_checkbox" name='Rotate'
-            onclick="display_popups_methods.rotate_click_checkbox();">
-        <div id="rotate_pop_up" style="display:none">
-
-            <div id="Rotate_limits">
-                <label>Enter rotation limit (slider)</label>
-                <input id="Rotate_probability" type="range" min="0" max="100" step="1"
-                    oninput="range_input_methods.update_probabilities();">
-
-                <input id="Rotate_probability" type="range" min="0" max="100" step="1"
-                    oninput="range_input_methods.update_probabilities();">
-            </div>
+<body>
+    <a href='' id="download_tag" download onclick="close_download_tag();"></a>
 
 
-            <div id="rotate_probabilities">
+
+    <div id='augmentation'>
+        <label for="absolute_path">Image directory absolute path</label>
+        <input type="text" id="absolute_path" name="absolute_path" placeholder="absolute_path"><br>
+
+        <!-- <input id="Flip_probability" type="range" min="0" max="100" step="any" /><br>  EXAMPLE OF SLIDER  -->
+        <div id="Flip">
+            <label for="Flip">Flip</label>
+            <input type="checkbox" value="Flip" name='Flip' id="Flip_check_box"
+                onclick="display_popups_methods.vertical_or_horizontal_flip_click_checkbox();">
+            <div id="Flip_pop_up" style="display:none">
+                <label>vertical</label>
+                <input type='checkbox'>
+                <br>
+                <label>horizontal</label>
+                <input type="checkbox">
+                <br>
                 <label>Enter probability of occuring (0-100%)</label>
-                <input id="Rotate_probability" type="range" min="0" max="100" step="1"
+                <input id="Flip_probability" type="range" min="0" max="100" step="1"
                     oninput="range_input_methods.update_probabilities();">
-                <b id="show_Rotate_probability"></b>
+                <b id='show_Flip_probability'>50</b>
             </div>
-
         </div>
-    </div>
-
-    <br>
-    <div id="blur">
-        <label for="blur">blur</label>
-        <input type="checkbox" value="blur_checkbox" id="blur_checkbox" name="blur_checkbox"
-            onclick="display_popups_methods.blur_click_checkbox();">
-        <div id="blur_pop_up" style="display:none">
-            enter blur limit
-            <br>Enter probability of occuring (0-100%)
-        </div>
-    </div>
-
-    <button onclick="copy_paste_code_methods.show_copy_and_paste_checkbox();">Submit</button>
-    <br><br>
-    <div id="copy_paste_div" style='display:none'>
-        <!--<input type="text" id="copy_paste_textbox">-->
-        <button type="submit" onclick="copy_paste_code_methods.copy_and_paste();">Copy and paste code</button>
         <br>
-        <textarea id="code_block" name="code_block" rows="10" cols="10"></textarea>
-    </div>
-    <!-- make it so that the path of the directory that needs to be augmented is given-->
-</div>
+        <div id="90° rotate">
+            <label for="90° rotate">90° rotate</label>
+            <input type="checkbox" value="90° rotate" id="90° rotate_check_box" name='90° rotate'
+                onclick="display_popups_methods.rotate_90_click_checkbox();">
+            <div id="90_rotate_popup" style="display:none">
+                <label>enter probability of occuring (0-100%)</label>
+                <input id="rotate_90_probability" type="range" min="0" max="100" step="1"
+                    oninput="range_input_methods.update_probabilities();">
+                <b id="show_rotate_90_probability">50</b>
+            </div>
+        </div>
+        <br>
+        <div id="Crop">
+            <label for="Crop">Crop</label>
+            <input type="checkbox" value="Crop" id="Crop_checkbox" name='Crop'
+                onclick="display_popups_methods.crop_click_checkbox();"> <b></b>
+            <div id="crop_pop_up" style="display:none">
 
-<form method="POST" action='/upload' class="dropzone dz-clickable" 
-      id="dropper" enctype="multipart/form-data">
-</form>
+                <label>Enter minimum % of image cropped.</label>
+                <input id="min_cropped" type="range" min="0" max="100" step="1"
+                    oninput="range_input_methods.update_crop_percent_of_image_cropped();">
+                <b id="crop_min_percent"></b>
+                <br>
+                <label>Enter max % of image cropped.</label>
+                <input id="max_cropped" type="range" min="0" max="100" step="1"
+                    oninput="range_input_methods.update_crop_percent_of_image_cropped();">
+                <b id="crop_max_percent"></b>
 
-<script type="application/javascript">
-    Dropzone.options.dropper = {
-        paramName: 'file',
-        chunking: true,
-        forceChunking: true,
-        url: '/upload',
-        maxFilesize: 100000, // megabytes
-        chunkSize: 1000000 // bytes
-    }
-</script>
+                <br><label>Enter probability of occuring (0-100%)</label>
+                <input id="crop_probability" type="range" min="0" max="100" step="1"
+                    oninput="range_input_methods.update_probabilities();">
+                <b id="show_crop_probability"></b>
+            </div>
+        </div>
+        <br>
+        <div id='Rotate'>
+            <label for="Rotate">Rotate</label> <!-- make user pick rotation range-->
+            <input type="checkbox" value="Rotate" id="Rotate_checkbox" name='Rotate'
+                onclick="display_popups_methods.rotate_click_checkbox();">
+            <div id="rotate_pop_up" style="display:none">
 
+                <div id="Rotate_limits">
+                    <label>Enter rotation limit (slider)</label>
+                    <input id="Rotate_probability" type="range" min="0" max="100" step="1"
+                        oninput="range_input_methods.update_probabilities();">
+
+                    <input id="Rotate_probability" type="range" min="0" max="100" step="1"
+                        oninput="range_input_methods.update_probabilities();">
+                </div>
+
+
+                <div id="rotate_probabilities">
+                    <label>Enter probability of occuring (0-100%)</label>
+                    <input id="Rotate_probability" type="range" min="0" max="100" step="1"
+                        oninput="range_input_methods.update_probabilities();">
+                    <b id="show_Rotate_probability"></b>
+                </div>
+
+            </div>
+        </div>
+
+        <br>
+        <div id="blur">
+            <label for="blur">blur</label>
+            <input type="checkbox" value="blur_checkbox" id="blur_checkbox" name="blur_checkbox"
+                onclick="display_popups_methods.blur_click_checkbox();">
+            <div id="blur_pop_up" style="display:none">
+                enter blur limit
+                <br>Enter probability of occuring (0-100%)
+            </div>
+        </div>
+
+
+        <form method="POST" action='/upload' class="dropzone dz-clickable" id="dropper" enctype="multipart/form-data">
+        </form>
+        <br><br>
+        <button type="submit" onclick="copy_paste_code_methods.show_copy_and_paste_checkbox();"
+            id="dropzone_submit">Submit</button>
+
+        <script type="application/javascript">
+            data1 = 'false'
+            function sleep(ms) {
+                const start = Date.now();
+                while (Date.now() - start < ms) { }
+            }
+
+            Dropzone.options.dropper = {
+                paramName: 'file',
+                autoProcessQueue: false,
+                chunking: true,
+                forceChunking: true,
+                url: '/upload',
+
+                init: function () {
+                    this.on("queuecomplete", async function () {
+
+                        alert("All files have uploaded. Augmenting now...");
+                        this.removeAllFiles(true);
+                        console.log('file id:', file_id);
+                        data1 = 'false';
+                        while (data1 != 'true') {
+                            this.removeAllFiles(true);
+                            await fetch('/check_finished/' + file_id).then(response => {
+                                const contentType = response.headers.get("content-type");
+                                if (contentType && contentType.indexOf("application/json") !== -1) {
+                                    return response.json().then(data => {
+                                        data1 = JSON.stringify(data);
+                                        console.log('DATA:', data)
+                                    });
+                                } else {
+                                    return response.text().then(text => {
+                                        console.log('text:', text)
+                                        data1 = text;
+                                        console.log('data1:', data1)
+                                        // The response wasn't a JSON object
+                                        // Process your text as a String
+                                    });
+                                }
+                            });
+                        }
+                        document.getElementById('download_tag').innerText = 'download here';
+                        document.getElementById('download_tag').href = '/download/' + file_id;
+                    });
+
+
+                    this.on("sending", function (file, xhr, formData) {
+                        // Add parameters to be sent with every chunk request
+                        formData.append('id', file_id);
+
+                    });
+                },
+
+                maxFilesize: 100 * 1e+3, // MB 
+                chunkSize: (1e+8), // bytes
+                acceptedFiles: ".zip",
+                maxFiles: 1,
+                maxfilesexceeded: function (file) {
+                    this.removeAllFiles();
+                    this.addFile(file);
+                }
+            }
+            document.getElementById('dropzone_submit').addEventListener('click', function () {
+                // Access Dropzone instance
+                close_download_tag();
+                var dropzone = Dropzone.forElement('#dropper');
+                // Process the queue
+                dropzone.processQueue();
+                //dropzone.removeAllFiles(true);
+            });
+
+        </script>
+        <div id="copy_paste_div" style='display:none'>
+            <!--<input type="text" id="copy_paste_textbox">-->
+            <button type="submit" onclick="copy_paste_code_methods.copy_and_paste();">Copy and paste code</button>
+            <br>
+            <textarea id="code_block" name="code_block" rows="10" cols="10"></textarea>
+        </div>
+        <!-- make it so that the path of the directory that needs to be augmented is given-->
 </body>
 
 </html>
