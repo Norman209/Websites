@@ -30,7 +30,7 @@ def starting_page():
 wait_augmenting_dict = {}
 
 
-#TODO: add background task that deletes files that user has already downloaded, and hide download button
+#TODO: add background task that deletes files that user has already downloaded
 @app.route('/download/<id>', methods=['GET']) #<id> is a dynamic parameter, meaning it's not a fixed value and is the text after '/download'
 def download(id):
     for dir in os.listdir(upload_directory):
