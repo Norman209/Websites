@@ -15,7 +15,7 @@ upload_directory='/Users/milesnorman/websites/upload_folders'
 
 space_id = 'efscsI8785'
 left_par_id = 'rjrbvldbv23'      #encoding invalid characters, then decoding them when user downloads
-right_par_id = 'oidfvdjlvbevo'
+right_par_id = 'oidfvdjlvbevo'   #TODO: look for more potential invalid characters that could crash the server
 txt_id = 'mnhshgibsbduir'
 
 @app.route("/",methods=['GET', 'POST'])
