@@ -1,16 +1,22 @@
-from flask import Flask, request, send_from_directory, jsonify,redirect,render_template,send_file,make_response
+from flask import Flask, request, send_from_directory, jsonify,redirect,render_template,send_file,make_response,url_for
 from werkzeug.utils import secure_filename
 import logging
 log = logging.getLogger('pydrop')
 import shutil
+import time
 import os
 import uuid
+from threading import Thread
+
 app = Flask(__name__, static_folder='public')
 app.config['UPLOAD_FOLDER']='/Users/milesnorman/websites/upload_folders'
 app.config["TEMPLATES_AUTO_RELOAD"] = True
 upload_directory='/Users/milesnorman/websites/upload_folders'
-print('starting server')
 
+space_id = 'efscsI8785'
+left_par_id = 'rjrbvldbv23'      #encoding invalid characters, then decoding them when user downloads
+right_par_id = 'oidfvdjlvbevo'
+txt_id = 'mnhshgibsbduir'
 
 @app.route("/",methods=['GET', 'POST'])
 def starting_page():
@@ -21,56 +27,42 @@ def starting_page():
     return render_template('augment.html')
 
 
-# USING FETCH API WITH JS AND PYTHON
-
-# // let formData = new FormData(); // empty data 
-# // let image_id='random id here'  // id that will be assigned to data
-
-# // dataset = document.getElementById("folder_upload_id").files; //client's uploaded folder from html form
- 
-# // sample_image=dataset[0] //first image of client's uploaded folder
-
-# // formData.append('image',sample_image) // adding image to data that will be posted to flask server
-# // formData.append('image_id', image_id) //giving the data/single image an id 
-
-# // fetch('/upload', { method: "POST",body: formData}); //posting data (single image) to flask code with '/upload' URL
-
-# from flask import request
-# @app.route('/upload') #url specified in fetch POST request
-# def test():
-#     if request.method=='POST':
-
-#         image = request.files['image'] #getting the image from the post request
-#         image_id=request.form['image_id'] #getting the image id
-#         #BTW, to get files from a fetch form, use request.files, to get text, use request.form
-#         #in this case, the text is the image id, the file is the image
-
-#         image.save(os.path.join(image_directory, image.filename)) #saving the file/image to the webserver directory
+wait_augmenting_dict = {}
 
 
+#TODO: add background task that deletes files that user has already downloaded, and hide download button
+@app.route('/download/<id>', methods=['GET']) #<id> is a dynamic parameter, meaning it's not a fixed value and is the text after '/download'
+def download(id):
+    for dir in os.listdir(upload_directory):
+        if id in dir:
+            print(id,'in',dir)
+            download_file = dir
+    if download_file is not None:
+        new_download_file_name = download_file.replace(id,'').replace(space_id,' ').replace(left_par_id,'(').replace(right_par_id,')')
+        return send_file(os.path.join(upload_directory, download_file), as_attachment=True,download_name=new_download_file_name)
 
-@app.route('/download/<filename>', methods=['GET']) #<filename> is a dynamic parameter, meaning it's not a fixed value and is the text after '/download'
-def download(filename):
 
-    print('filename:',filename)
-    directory = '/Users/milesnorman/websites/upload_folders' # Specify the directory where your file is stored
-    
-    # Return the file to the client for download
-    return send_file(os.path.join(directory, filename), as_attachment=True)
-
-
+@app.route('/check_finished/<zip_id>', methods=['GET'])
+def check_finished(zip_id):
+    print(wait_augmenting_dict[zip_id])
+    return wait_augmenting_dict[zip_id]
+        
 
 @app.route('/upload', methods=['GET','POST'])
 def upload():
+
     file = request.files['file']
+    file_id = request.form['id']
+    wait_augmenting_dict[file_id] = 'false'
+    file.filename = file.filename.replace(' ',space_id).replace('(',left_par_id).replace(')',right_par_id)
 
     save_path = os.path.join(upload_directory, secure_filename(file.filename))
-    current_chunk = int(request.form['dzchunkindex'])
 
+    current_chunk = int(request.form['dzchunkindex'])
     # If the file already exists it's ok if we are appending to it,
     # but not if it's new file that would overwrite the existing one
     if os.path.exists(save_path) and current_chunk == 0:
-        # 400 and 500s will tell dropzone that an error occurred and show an error
+        # 400 and 500s will tell dsropzone that an error occurred and show an error
         return make_response(('File already exists', 400))
 
     try:
@@ -83,8 +75,9 @@ def upload():
         return make_response(("Not sure why," " but we couldn't write the file to disk", 500))
 
     total_chunks = int(request.form['dztotalchunkcount'])
-
+    print(f'current chunks to total chunks: {current_chunk}/{total_chunks}')
     if current_chunk + 1 == total_chunks:
+
         # This was the last chunk, the file should be complete and the size we expect
         if os.path.getsize(save_path) != int(request.form['dztotalfilesize']):
             log.error(f"File {file.filename} was completed, "
@@ -94,8 +87,17 @@ def upload():
             return make_response(('Size mismatch', 500))
         else:
             log.info(f'File {file.filename} has been uploaded successfully')
-    else:
-        log.debug(f'Chunk {current_chunk + 1} of {total_chunks} '
+
+            source=f'{upload_directory}/{file.filename}'
+            dest = f'{upload_directory}/{file_id}{file.filename}'
+            os.rename(source,dest)
+             #TODO: augment dataset here
+
+            wait_augmenting_dict[file_id] = 'true'
+
+
+    else: 
+        log.debug(f'Chunk {current_chunk + 1} of {total_chunks}'
                   f'for file {file.filename} complete')
 
     return make_response(("Chunk upload successful", 200))
@@ -107,7 +109,6 @@ def upload():
 def Classification():
     return render_template('Classification.html')
 
-
 @app.route('/Object_detection',methods=['POST','GET'])
 def Object_detection():
     return render_template('Object_detection.html')
@@ -118,8 +119,3 @@ def Segmentation():
     
 if __name__ == '__main__':
     app.run(debug=True)#debug=True
-
-
-
-    
-    
