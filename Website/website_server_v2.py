@@ -6,7 +6,6 @@ import shutil
 import time
 import os
 import uuid
-from threading import Thread
 
 app = Flask(__name__, static_folder='public')
 app.config['UPLOAD_FOLDER']='/Users/milesnorman/websites/upload_folders'
