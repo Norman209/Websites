@@ -12,6 +12,7 @@ app = Flask(__name__, static_folder='public')
 app.config['UPLOAD_FOLDER']='/Users/milesnorman/websites/upload_folders'
 app.config["TEMPLATES_AUTO_RELOAD"] = True
 upload_directory='/Users/milesnorman/websites/upload_folders'
+wait_augmenting_dict = {}
 
 space_id = 'efscsI8785'
 left_par_id = 'rjrbvldbv23'      #encoding invalid characters, then decoding them when user downloads
@@ -25,11 +26,6 @@ def starting_page():
         print(f'chose {value}')
         return redirect(f'/{value}')
     return render_template('augment.html')
-
-
-wait_augmenting_dict = {}
-
-
 #TODO: add background task that deletes files that user has already downloaded
 @app.route('/download/<id>', methods=['GET']) #<id> is a dynamic parameter, meaning it's not a fixed value and is the text after '/download'
 def download(id):
