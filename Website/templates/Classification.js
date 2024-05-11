@@ -13,14 +13,14 @@ function collect_aug_data() {
     let rotate_checked = document.getElementById('Rotate_checkbox').checked;
     let blur_checked = document.getElementById('blur_checkbox').checked;
     if (flip_checked) {
-        aug_list.push(['flip']) //this auglist has
+        aug_list.push(['flip']) //items in order: vertically flipped, horizontally flipped, vertical prob, horizontal prob
         vertically_flipped = document.getElementById('vertical_flip').checked;
         horizontally_flipped = document.getElementById('horizontal_flip').checked;
         aug_list[-1].push(vertically_flipped)
         aug_list[-1].push(horizontally_flipped)
         if (vertically_flipped) {
             probability = document.getElementById('')
-            aug_list[-1].push()//push probability if advanced
+            aug_list[-1].push(probability)//push probability if advanced
         }
     }
     if (rotation_90_checked) {
