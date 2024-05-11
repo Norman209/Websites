@@ -6,6 +6,7 @@ import shutil
 import time
 import os
 import uuid
+import threading
 
 app = Flask(__name__, static_folder='public')
 app.config['UPLOAD_FOLDER']='/Users/milesnorman/websites/upload_folders'
@@ -15,8 +16,7 @@ wait_augmenting_dict = {}
 
 space_id = 'efscsI8785'
 left_par_id = 'rjrbvldbv23'      #encoding invalid characters, then decoding them when user downloads
-right_par_id = 'oidfvdjlvbevo'   #TODO: look for more potential invalid characters that could crash the server
-txt_id = 'mnhshgibsbduir'
+right_par_id = 'oidfvdjlvbevo'
 
 @app.route("/",methods=['GET', 'POST'])
 def starting_page():
@@ -25,23 +25,33 @@ def starting_page():
         print(f'chose {value}')
         return redirect(f'/{value}')
     return render_template('augment.html')
-#TODO: add background task that deletes files that user has already downloaded
+
+
+
+#TODO: add background task that deletes files that user has already downloaded, and hide download button
 @app.route('/download/<id>', methods=['GET']) #<id> is a dynamic parameter, meaning it's not a fixed value and is the text after '/download'
 def download(id):
     for dir in os.listdir(upload_directory):
         if id in dir:
             print(id,'in',dir)
             download_file = dir
-    if download_file is not None:
-        new_download_file_name = download_file.replace(id,'').replace(space_id,' ').replace(left_par_id,'(').replace(right_par_id,')')
-        return send_file(os.path.join(upload_directory, download_file), as_attachment=True,download_name=new_download_file_name)
+            print(len(download_file))
+            print(download_file)
+            thread1 = threading.Thread(target=delete_file,args=(f'{upload_directory}/{download_file}',))
+            thread1.start()
+            new_download_file_name = download_file.replace(id,'').replace(space_id,' ').replace(left_par_id,'(').replace(right_par_id,')')
+            return send_file(os.path.join(upload_directory, download_file), as_attachment=True,download_name=new_download_file_name)
 
 
 @app.route('/check_finished/<zip_id>', methods=['GET'])
 def check_finished(zip_id):
     print(wait_augmenting_dict[zip_id])
     return wait_augmenting_dict[zip_id]
-        
+
+
+def delete_file(filename):
+    time.sleep(.3)
+    os.remove(filename)
 
 @app.route('/upload', methods=['GET','POST'])
 def upload():
@@ -51,7 +61,7 @@ def upload():
     wait_augmenting_dict[file_id] = 'false'
     file.filename = file.filename.replace(' ',space_id).replace('(',left_par_id).replace(')',right_par_id)
 
-    save_path = os.path.join(upload_directory, secure_filename(file.filename))
+    save_path = os.path.join(upload_directory, file_id+secure_filename(file.filename))
 
     current_chunk = int(request.form['dzchunkindex'])
     # If the file already exists it's ok if we are appending to it,
@@ -82,13 +92,10 @@ def upload():
             return make_response(('Size mismatch', 500))
         else:
             log.info(f'File {file.filename} has been uploaded successfully')
-
-            source=f'{upload_directory}/{file.filename}'
-            dest = f'{upload_directory}/{file_id}{file.filename}'
-            os.rename(source,dest)
              #TODO: augment dataset here
-
+            form_data = request.form['aug data']
             wait_augmenting_dict[file_id] = 'true'
+
 
 
     else: 
@@ -103,6 +110,20 @@ def upload():
 @app.route('/Classification',methods=['POST','GET']) 
 def Classification():
     return render_template('Classification.html')
+
+@app.route('/Classification.js',methods=['POST','GET']) 
+def Classification_js():
+    return render_template('Classification.js')
+
+@app.route('/upload_folder',methods=['POST']) 
+def upload_folder():
+    return 'uploaded folder'
+
+
+
+@app.route('/template',methods=['POST','GET']) 
+def template():
+    return render_template('template.html')
 
 @app.route('/Object_detection',methods=['POST','GET'])
 def Object_detection():
