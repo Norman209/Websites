@@ -15,11 +15,17 @@
     <title>Document</title>
 
 </head>
-<body>
-    <a href='' id="download_tag" download onclick="close_download_tag();"></a>
+
+<body style="background-color:lightblue;">
+    <h1>Classification image augmentation</h1>
+
+    <mark>
+        <h3><a href='' id="download_tag" download onclick="close_download_tag();"></a></h3>
+    </mark>
+
     <div id='augmentation'>
-        <label for="absolute_path">Image directory absolute path</label>
-        <input type="text" id="absolute_path" name="absolute_path" placeholder="absolute path here"><br>
+        <!-- <label for="absolute_path">Image directory absolute path</label> -->
+        <!-- <input type="text" id="absolute_path" name="absolute_path" placeholder="absolute path here"><br> -->
 
         <!-- <input id="Flip_probability" type="range" min="0" max="100" step="any" /><br>  EXAMPLE OF SLIDER  -->
         <div id="Flip">
@@ -29,24 +35,28 @@
             <div id="Flip_pop_up" style="display:none">
 
                 <label for="vertical_flip">vertical</label>
-                <input type='checkbox' id="vertical_flip" name="vertical_flip">
+                <input type='checkbox' id="vertical_flip" name="vertical_flip"
+                    onclick="display_popups_methods.verticalflip_click_checkbox();">
                 <br>
                 <div id="vertical_flip_popup" style="display:none">
                     <label>% of dataset applied to (0-100%)</label>
-                    <input id="vertical_flip_probability" type="range" min="0" max="100" step="1"
+                    <input id="vertical_flip_probability" type="range" min="1" max="100" step="1"
                         oninput="range_input_methods.update_probabilities();">
-                    <b id='show_vertical_flip_probability'>50</b>
+                    <b id='show_vertical_flip_probability'>50</b><b>%</b>
+                    <br>
+                    <br>
                 </div>
 
                 <label for="horizontal_flip">horizontal</label>
-                <input type="checkbox" id="horizontal_flip" name="horizontal_flip">
-                <br>
+                <input type="checkbox" id="horizontal_flip" name="horizontal_flip"
+                    onclick="display_popups_methods.horizontalflip_click_checkbox();">
 
                 <div id="horizontal_flip_popup" style="display:none">
                     <label>% of dataset applied to (0-100%)</label>
-                    <input id="horizontal_flip_probability" type="range" min="0" max="100" step="1"
+                    <input id="horizontal_flip_probability" type="range" min="1" max="100" step="1"
                         oninput="range_input_methods.update_probabilities();">
-                    <b id='show_horizontal_flip_probability'>50</b>
+                    <b id='show_horizontal_flip_probability'>50</b><b>%</b>
+                    <br>
                 </div>
 
             </div>
@@ -58,9 +68,9 @@
                 onclick="display_popups_methods.rotate_90_click_checkbox();">
             <div id="90_rotate_popup" style="display:none">
                 <label>% of dataset applied to (0-100%)</label>
-                <input id="rotate_90_probability" type="range" min="0" max="100" step="1"
+                <input id="rotate_90_probability" type="range" min="1" max="100" step="1"
                     oninput="range_input_methods.update_probabilities();">
-                <b id="show_rotate_90_probability">50</b>
+                <b id="show_rotate_90_probability">50</b><b>%</b>
             </div>
         </div>
         <br>
@@ -71,19 +81,19 @@
             <div id="crop_pop_up" style="display:none">
 
                 <label>Enter minimum % of image cropped.</label>
-                <input id="min_cropped" type="range" min="0" max="100" step="1"
+                <input id="min_cropped" type="range" min="1" max="100" step="1"
                     oninput="range_input_methods.update_crop_percent_of_image_cropped();">
-                <b id="crop_min_percent"></b>
+                <b id="crop_min_percent">0</b><b>%</b>
                 <br>
                 <label>Enter max % of image cropped.</label>
-                <input id="max_cropped" type="range" min="0" max="100" step="1"
+                <input id="max_cropped" type="range" min="1" max="100" step="1"
                     oninput="range_input_methods.update_crop_percent_of_image_cropped();">
-                <b id="crop_max_percent"></b>
+                <b id="crop_max_percent">0</b><b>%</b>
 
                 <br><label>% of dataset applied to (0-100%)</label>
-                <input id="crop_probability" type="range" min="0" max="100" step="1"
+                <input id="crop_probability" type="range" min="1" max="100" step="1"
                     oninput="range_input_methods.update_probabilities();">
-                <b id="show_crop_probability"></b>
+                <b id="show_crop_probability">0</b><b>%</b>
             </div>
         </div>
         <br>
@@ -94,20 +104,17 @@
             <div id="rotate_pop_up" style="display:none">
 
                 <div id="Rotate_limits">
-                    <label>Enter rotation limit (slider)</label>
-                    <input id="Rotate_probability" type="range" min="0" max="100" step="1"
-                        oninput="range_input_methods.update_probabilities();">
-
-                    <input id="Rotate_probability" type="range" min="0" max="100" step="1"
-                        oninput="range_input_methods.update_probabilities();">
+                    <label>Enter rotation limit</label>
+                    <input id="Rotate_limit" type="range" min="1" max="45" step="1"
+                        oninput="range_input_methods.update_probabilities();"><b>1-</b><b id="show_Rotate_limit">3</b>°
                 </div>
 
 
                 <div id="rotate_probabilities">
                     <label>% of dataset applied to (0-100%)</label>
-                    <input id="Rotate_probability" type="range" min="0" max="100" step="1"
+                    <input id="Rotate_probability" type="range" min="1" max="100" step="1"
                         oninput="range_input_methods.update_probabilities();">
-                    <b id="show_Rotate_probability"></b>
+                    <b id="show_Rotate_probability">50</b><b>%</b>
                 </div>
 
             </div>
