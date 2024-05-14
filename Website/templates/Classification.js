@@ -3,7 +3,9 @@ function close_download_tag() {
     let download_href = document.getElementById('download_tag');
     download_href.innerText = ''
     //download_href.href = ''
+
 }
+
 function collect_aug_data() {
     aug_list = [];
     augs_checkboxes = ['blur_checkbox', "90° rotate_check_box", 'Crop_checkbox', 'Rotate_checkbox', 'blur_checkbox']
@@ -76,10 +78,24 @@ class display_popups {
 
     }
     verticalflip_click_checkbox() {
-        vertical_flip_checkbox = document.getElementById('vertical_flip');
+        let vertical_flip_checkbox = document.getElementById('vertical_flip');
+        let pop_up = document.getElementById('vertical_flip_popup')
+        if (vertical_flip_checkbox.checked == true) {
+            pop_up.style.display = 'block';
+        }
+        else {
+            pop_up.style.display = 'none';
+        }
     }
     horizontalflip_click_checkbox() {
-        horizontal_flip_checkbox = document.getElementById('horizontal_flip');
+        let horizontal_flip_checkbox = document.getElementById('horizontal_flip');
+        let pop_up = document.getElementById('horizontal_flip_popup')
+        if (horizontal_flip_checkbox.checked == true) {
+            pop_up.style.display = 'block';
+        }
+        else {
+            pop_up.style.display = 'none';
+        }
 
 
     }
@@ -95,7 +111,7 @@ class display_popups {
             rotate_90_pop_up.style.display = 'none';
             console.log('unchecked checkbox')
         }
-    } 
+    }
 
     crop_click_checkbox() {
         let pop_up = document.getElementById('crop_pop_up')
@@ -115,9 +131,10 @@ class display_popups {
 class range_input_scripts {
 
     update_probabilities() {
-        let sliders = ['Flip_probability', 'rotate_90_probability', 'crop_probability', 'horizontal_flip_probability', 'vertical_flip_probability'];
+        let sliders = ['rotate_90_probability', 'crop_probability', 'horizontal_flip_probability', 'vertical_flip_probability','Rotate_probability','Rotate_limit'];
         let i = 0
-        while (i < sliders.length) {
+        while (i < sliders.length) {  
+            console.log(sliders[i]);
             let slider = document.getElementById(sliders[i]);
             let show_slider = document.getElementById(`show_${sliders[i]}`)
             show_slider.innerText = slider.value
@@ -207,7 +224,7 @@ Dropzone.options.dropper = {
                 }
             });
             //}
-            document.getElementById('download_tag').innerText = 'download here';
+            document.getElementById('download_tag').innerText = 'click here to download augmented dataset';
             document.getElementById('download_tag').href = '/download/' + file_id;
         });
 
