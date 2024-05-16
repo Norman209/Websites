@@ -1,3 +1,4 @@
+
 console.log('JAVASCRIPT STARTED');
 function close_download_tag() {
     let download_href = document.getElementById('download_tag');
@@ -117,11 +118,16 @@ class display_popups {
         let pop_up = document.getElementById('crop_pop_up')
         let check_box = document.getElementById('Crop_checkbox')
         if (check_box.checked == true) {
-            pop_up.style.display = 'block';
+            console.log(pop_up.style.display)
+            pop_up.style.cssText = "";
             console.log('checked checkbox')
         }
         if (check_box.checked == false) {
-            pop_up.style.display = 'none';
+            // pop_up.style.display = "position: absolute; left: -1000px";
+            console.log(pop_up.style.display)
+            // pop_up.style.position='absolute';
+            // pop_up.style.left='-1000px';
+            pop_up.style.display='none';
             console.log('unchecked checkbox')
         }
     }
@@ -131,9 +137,9 @@ class display_popups {
 class range_input_scripts {
 
     update_probabilities() {
-        let sliders = ['rotate_90_probability', 'crop_probability', 'horizontal_flip_probability', 'vertical_flip_probability','Rotate_probability','Rotate_limit'];
+        let sliders = ['rotate_90_probability', 'crop_probability', 'horizontal_flip_probability', 'vertical_flip_probability', 'Rotate_probability', 'Rotate_limit'];
         let i = 0
-        while (i < sliders.length) {  
+        while (i < sliders.length) {
             console.log(sliders[i]);
             let slider = document.getElementById(sliders[i]);
             let show_slider = document.getElementById(`show_${sliders[i]}`)
