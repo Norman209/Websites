@@ -113,6 +113,7 @@ def Classification():
 
 @app.route('/Classification.js',methods=['POST','GET']) 
 def Classification_js():
+    print('renderd')
     return render_template('Classification.js')
 
 @app.route('/upload_folder',methods=['POST']) 
