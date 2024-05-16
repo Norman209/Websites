@@ -8,15 +8,20 @@
 
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/dropzone/5.4.0/min/basic.min.css" />
 
+
     <script type="application/javascript"
         src="https://cdnjs.cloudflare.com/ajax/libs/dropzone/5.4.0/min/dropzone.min.js">
         </script>
-    <script src="Classification.js"></script>
     <title>Document</title>
+
+    <!-- In <body> -->
+    <!-- <link rel="stylesheet" href="style.css" /> -->
+    <script src="Classification.js"></script>
+    <link rel="stylesheet" href="style.css" />
 
 </head>
 
-<body style="background-color:lightblue;">
+<body style="background-color: aqua;">
     <h1>Classification image augmentation</h1>
 
     <mark>
@@ -32,13 +37,13 @@
             <label for="Flip">Flip</label>
             <input type="checkbox" value="Flip" name='Flip' id="Flip_check_box"
                 onclick="display_popups_methods.flip_click_checkbox();">
-            <div id="Flip_pop_up" style="display:none">
+            <div id="Flip_pop_up" style="display: none;">
 
                 <label for="vertical_flip">vertical</label>
                 <input type='checkbox' id="vertical_flip" name="vertical_flip"
                     onclick="display_popups_methods.verticalflip_click_checkbox();">
                 <br>
-                <div id="vertical_flip_popup" style="display:none">
+                <div id="vertical_flip_popup" style="display:none;">
                     <label>% of dataset applied to (0-100%)</label>
                     <input id="vertical_flip_probability" type="range" min="1" max="100" step="1"
                         oninput="range_input_methods.update_probabilities();">
@@ -51,7 +56,7 @@
                 <input type="checkbox" id="horizontal_flip" name="horizontal_flip"
                     onclick="display_popups_methods.horizontalflip_click_checkbox();">
 
-                <div id="horizontal_flip_popup" style="display:none">
+                <div id="horizontal_flip_popup" style="display:none;">
                     <label>% of dataset applied to (0-100%)</label>
                     <input id="horizontal_flip_probability" type="range" min="1" max="100" step="1"
                         oninput="range_input_methods.update_probabilities();">
@@ -78,19 +83,17 @@
             <label for="Crop">Crop</label>
             <input type="checkbox" value="Crop" id="Crop_checkbox" name='Crop'
                 onclick="display_popups_methods.crop_click_checkbox();"> <b></b>
-            <div id="crop_pop_up" style="display:none">
-
-                <label>Enter minimum % of image cropped.</label>
-                <input id="min_cropped" type="range" min="1" max="100" step="1"
-                    oninput="range_input_methods.update_crop_percent_of_image_cropped();">
-                <b id="crop_min_percent">0</b><b>%</b>
+            <div id="crop_pop_up" style="position:absolute;left: -1000px;"> <!--style="display:none"-->
                 <br>
-                <label>Enter max % of image cropped.</label>
-                <input id="max_cropped" type="range" min="1" max="100" step="1"
-                    oninput="range_input_methods.update_crop_percent_of_image_cropped();">
-                <b id="crop_max_percent">0</b><b>%</b>
+                <input type="text" style="position:absolute;right: -15px;width: 50px;";">
+                <div class="min-max-slider" data-legendnum="2" style="display: block; height: fit-content; width: 250px;"> 
+                    <label for="min">Minimum price</label>
+                    <input id="min" class="min" name="min" type="range" step="1" min="1" max="99" />
+                    <label for="max">Maximum price</label>
+                    <input id="max" class="max" name="max" type="range" step="1" min="1" max="99" />
+                </div>
 
-                <br><label>% of dataset applied to (0-100%)</label>
+                <label>% of dataset applied to (0-100%)</label>
                 <input id="crop_probability" type="range" min="1" max="100" step="1"
                     oninput="range_input_methods.update_probabilities();">
                 <b id="show_crop_probability">0</b><b>%</b>
@@ -143,7 +146,8 @@
             <br>
             <textarea id="code_block" name="code_block" rows="10" cols="10"></textarea>
         </div>
-        <!-- make it so that the path of the directory that needs to be augmented is given-->
+
+        <script src="test.js"></script>
 </body>
 
 </html>
