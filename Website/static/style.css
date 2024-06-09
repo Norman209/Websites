@@ -1,0 +1,150 @@
+* {
+    padding: 0;
+    margin: 0;
+  }
+  
+  body {
+    padding: 25px;
+    font-size: 125%;
+  }
+  
+  /* span.value.upper::before {
+    content: " - ";
+    display: inline-block;
+    margin-right: 0.4em;
+    margin-left: 0.4em;
+  }
+  
+  span.value.lower::after {
+    content: "%";
+    display: inline-block;
+  }
+  
+  span.value.upper::after {
+    content: "%";
+    display: inline-block;
+  }
+   */
+  
+  
+
+  #submit {
+    width: 20vw;
+    height: 10vh;
+    background-color: lightgreen;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    font-size: 18px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+}
+
+#dropzone_submit:hover {
+    background-color: limegreen;
+}
+
+input[type="checkbox"] {
+  width: 3vw;
+  height: 3vh;
+  cursor: pointer;
+}
+input[type="radio"] {
+  width: 3vw;
+  height: 3vh;
+  cursor: pointer;
+  vertical-align:middle;
+}
+
+select {
+  width: 15vw;
+  height: 5vh;
+  font-size: 125%;
+  vertical-align: middle;
+}
+
+.dropzone .dz-preview .dz-image {
+  width: auto;
+  height: auto;
+}
+
+
+
+/* General header styles */
+
+/* Specific styles for each header level */
+h1 {
+    font-size: 5vw; /* Larger font size for h1 */
+    font-weight: bold; /* Bold text */
+    color: #2c3e50; /* Slightly darker shade */
+    text-shadow: 1px 1px 2px #aaa; /* Subtle text shadow for depth */
+}
+
+
+
+h3 {
+    font-size: 1.5em; /* Smaller font size for h3 */
+    font-weight: normal; /* Normal weight */
+    color: black; /* Lighter shade */
+    background-color: #ecf0f1; /* Light background color */
+    padding: 1px; /* Padding around the header */
+    border-radius: 1px; /* Rounded corners */
+    display: inline-block; /* Only take up as much width as content */
+    box-shadow: 1px 1px 3px rgba(0, 0, 0, 0.1); /* Subtle box shadow */
+}
+
+
+#button-container {
+    display: flex;
+    justify-content: center;
+    width: 100%;
+    margin-top: 20px;
+}
+#dropper {
+    width: 500px;
+    justify-content: center;
+
+}
+.img_div {
+  float: left;
+  text-align: center;
+}
+#images-container figcaption {
+  border: 1px solid blue;
+  font-family: Verdana, Geneva, sans-serif;
+  font-size: 12px;
+  text-shadow: none;
+  color: black;
+  text-align: center;
+  height: auto;
+  word-wrap: break-word;
+  width:300px;
+}
+
+.min-max-slider {position: relative; width: 200px; text-align: center; margin-bottom: 50px;}
+.min-max-slider > label {display: none;}
+span.value {height: 1.7em; font-weight: bold; display: inline-block;}
+span.value.lower::after{content: "%-"; display: inline-block;}
+span.value.upper::after {content: "%"; display: inline-block; }
+.min-max-slider > .legend {display: flex; justify-content: space-between;}
+.min-max-slider > .legend > * {font-size: small; opacity: 0.25;}
+.min-max-slider > input {cursor: pointer; position: absolute;}
+
+/* webkit specific styling */
+.min-max-slider > input {
+  -webkit-appearance: none;
+  outline: none!important;
+  background: transparent;
+  background-image: linear-gradient(to bottom, transparent 0%, transparent 30%, silver 30%, silver 60%, transparent 60%, transparent 100%);
+}
+.min-max-slider > input::-webkit-slider-thumb {
+  -webkit-appearance: none; /* Override default look */
+  appearance: none;              
+  width: 14px; /* Set a specific slider handle width */
+  height: 14px; /* Slider handle height */
+  background: #eee; /* Green background */
+  cursor: pointer; /* Cursor on hover */
+  border: 1px solid gray;
+  border-radius: 100%;
+}
+.min-max-slider > input::-webkit-slider-runnable-track {cursor: pointer;}

@@ -1,0 +1,236 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/dropzone/5.4.0/min/dropzone.min.css" />
+
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/dropzone/5.4.0/min/basic.min.css" />
+
+
+    <script type="application/javascript"
+        src="https://cdnjs.cloudflare.com/ajax/libs/dropzone/5.4.0/min/dropzone.min.js">
+        </script>
+    <title>Document</title>
+
+    <!-- In <body> -->
+    <!-- <link rel="stylesheet" href="style.css" /> -->
+
+    <link rel="stylesheet" href="{{url_for('static',filename='style.css')}}" />
+</head>
+
+<body style="background-color: wheat; width: 100%;">
+    <h1 align="center">Classification image augmentation</h1>
+    <img src="" id="test_image">
+    <div id="upload_progress" style="display: none;">
+        <!-- upload progress here -->
+        <label for="dataset_upload_progress">Uploading progress:</label>
+        <progress id="dataset_upload_progress" value="0" max="100">0%</progress>
+    </div>
+    <div id="dropzone_buttons" style="font-size: 3vw;">
+        <br>
+        <input type="radio" id='zip' name="folder_or_zip" checked onclick="set_zip_or_folder_upload();"> <label
+            for="zip">zip</label>
+        <input type="radio" id='folder' name="folder_or_zip" onclick="set_zip_or_folder_upload();"> <label
+            for="folder">folder</label>
+        <br>
+
+        <div id='zip_upload_buttons'>
+            <form method="POST" action='/upload' class="dropzone dz-clickable" id="dropper"
+                enctype="multipart/form-data"
+                style="background-color: aliceblue; width: 30vw; height:10vw;text-align: top;overflow: hidden; font-size: 3vh;">
+            </form>
+        </div>
+
+        <div id="folder_upload_buttons" style="display: none;">
+            <input id="design" type="file" webkitdirectory="true" directory style="display: none;" /><br>
+            <input type="button" id="select_folder" value="Select folder..." onclick="document.getElementById('design').click();"  style="width: 20vw;height: 4.5vh; font-size: 2vw; text-align: center;"/>
+        </div>
+        <br>
+        <button id="submit_dropzone" onclick="send_dataset();" style="width: 10vw;height: 7vh;text-align: center; /* Centered text */" value="select folder"><b style="font-size: 2vw;">upload dataset</b></button>
+    </div>
+
+    <div id="Pre-Proccessing" style="opacity: 25%; font-size: 3vw;">
+        <br>
+        <h2>Pre-Proccessing Options</h2>
+        <br>
+
+        <label for="grayscale_preprocess">grayscale</label>
+        <input type="checkbox" id="grayscale_preprocess" style="width: 3vw;height: 3vh; vertical-align: center;">
+        <br>
+
+        <label for="resize_preprocess">resize</label>
+        <input type="checkbox" id="resize_preprocess">
+        <br>
+    </div>
+
+
+
+    <br>
+    <div id='augmentation' style="opacity: 25%; font-size: 3vw;">
+        <h2>Augmentations</h2>
+        <!-- <label for="absolute_path">Image directory absolute path</label> -->
+        <!-- <input type="text" id="absolute_path" name="absolute_path" placeholder="absolute path here"><br> -->
+
+        <!-- <input id="Flip_probability" type="range" min="0" max="100" step="any" /><br>  EXAMPLE OF SLIDER  -->
+        <div id="Flip">
+
+            <label for="Flip_check_box">Flip</label>
+            <input type="checkbox" value="Flip" name='Flip' id="Flip_check_box"
+                onchange="display_popups_methods.flip_click_checkbox();">
+            <div id="Flip_pop_up" style="display: none;">
+
+                <label for="vertical_flip">vertical</label>
+                <input type='checkbox' id="vertical_flip" name="vertical_flip">
+                <div id="vertical_flip_popup" style="display:none;"
+                    onclick="display_popups_methods.verticalflip_click_checkbox();">
+                    <!-- popup for vertical flip here -->
+                </div>
+
+                <br>
+                <label for="horizontal_flip">horizontal</label>
+                <input type="checkbox" id="horizontal_flip" name="horizontal_flip"
+                    onclick="display_popups_methods.horizontalflip_click_checkbox();">
+
+                <div id="horizontal_flip_popup" style="display:none;">
+                    <!-- popup for horizontal flip here -->
+                </div>
+            </div>
+        </div>
+        <br>
+        <div id="90° rotate">
+            <label for="90° rotate">90° rotate</label>
+            <input type="checkbox" value="90° rotate" id="90° rotate_check_box" name='90° rotate'
+                onchange="display_popups_methods.rotate_90_click_checkbox();">
+            <div id="90_rotate_popup" style="display:none">
+                <label for="Clockwise">Clockwise</label>
+                <input type="checkbox" id="Clockwise">
+                <br>
+                <label for="Counter-Clockwise"">Counter-Clockwise</label>
+                <input type='checkbox' id='Counter-Clockwise'>
+                <br>
+                <label for=" Upside Down">Upside Down</label>
+                <input type="checkbox" id="Upside Down">
+                <br>
+
+            </div>
+        </div>
+        <br>
+        <div id="Crop">
+            <label for="Crop">Crop</label>
+            <input type="checkbox" value="Crop" id="Crop_checkbox" name='Crop'
+                onchange="display_popups_methods.crop_click_checkbox();"><b></b>
+            <div id="crop_pop_up" style="position:absolute;left: -1000px;"> <!--style="display:none"-->
+                <br>
+                <label for="min-max-slider">Enter crop limit</label>
+                <div class="min-max-slider" data-legendnum="2">
+                    <label for="min">Minimum price</label>
+                    <input id="min" class="min" name="min" type="range" step="1" min="1" max="99" />
+                    <label for="max">Maximum price</label>
+                    <input id="max" class="max" name="max" type="range" step="1" min="1" max="99" />
+                </div>
+            </div>
+        </div>
+
+        <br>
+
+        <div id="grayscale">
+            <label for="grayscale_checkbox">grayscale</label>
+            <input type="checkbox" value="grayscale" id="grayscale_checkbox" name='grayscale_checkbox'
+                onchange="display_popups_methods.grayscale_click_checkbox();">
+            <div id="grayscale_popup" style="position:absolute;left: -1000px;">
+
+                <label>% of outputted images to grayscale</label>
+                <input id="grayscale_probability" type="range" min="1" max="100" step="1"
+                    oninput="range_input_methods.update_probabilities();"><b id="show_grayscale_probability">50</b>%
+            </div>
+        </div>
+        <br>
+        <div id='Rotate'>
+            <label for="Rotate">Rotate</label> <!-- make user pick rotation range-->
+            <input type="checkbox" value="Rotate" id="Rotate_checkbox" name='Rotate'
+                onclick="display_popups_methods.rotate_click_checkbox();">
+            <div id="rotate_pop_up" style="display:none">
+
+                <div id="Rotate_limits">
+                    <label>Enter rotation limit</label>
+                    <input id="Rotate_limit" type="range" min="1" max="45" step="1"
+                        oninput="range_input_methods.update_probabilities();" value='3'><b>1-</b><b
+                        id="show_Rotate_limit">3</b>°
+                </div>
+            </div>
+        </div>
+
+        <br>
+        <div id="blur">
+            <label for="blur">blur</label>
+            <input type="checkbox" value="blur_checkbox" id="blur_checkbox" name="blur_checkbox"
+                onclick="display_popups_methods.blur_click_checkbox();">
+            <div id="blur_pop_up" style="display:none">
+                <label>enter blur limit</label>
+                <input id="blur_limit" type="range" min=".1" max="25" step=".1"
+                    oninput="range_input_methods.update_probabilities();" value="5">
+                <b id="show_blur_limit"></b> px
+                <br>
+                <div id="images-container">
+                    <div class="img_div">
+                        <img src="" id="normal_sample_image" class="sample_image" style="max-width: 50vw;max-height: 25vh;">
+                        <figcaption id=sample_limit_caption">0 px</figcaption>
+                    </div>
+ 
+                    <div class="img_div" style="max-width: 100%;">
+                        <img src="" id="blur_sample_image" class="sample_image" style="max-width: 50vw;max-height: 25vh;">
+                        <figcaption id="blur_limit_caption">5</figcaption>
+                    </div>
+                </div>
+                <br><br><br><br><br>
+            </div>
+        </div>
+        <div style="display: flex;
+        width: 100%;
+        margin-top: 20px;">
+            <label for="Dataset Expansion Factor">Dataset Expansion Factor</label>
+            <select name="Dataset Expansion Facto" id="Dataset Expansion Factor"
+                style="width: 15vw; height: 5vh; font-size: 125%; vertical-align:middle;" disabled>
+                <option value="2x">2x</option>
+                <option value="3x">3x</option>
+                <option value="4x">4x</option>
+                <option value="5x">5x</option>
+                <option value="6x">6x</option>
+                <option value="7x">7x</option>
+                <option value="8x">8x</option>
+                <option value="9x">9x</option>
+                <option value="10x">10x</option>
+                <option value="11x">11x</option>
+                <option value="12x">12x</option>
+                <option value="13x">13x</option>
+                <option value="14x">14x</option>
+                <option value="15x">15x</option>
+            </select>
+        </div>
+
+
+        <div id="button-container" style="right: -250px;">
+            <button type="submit" onclick="submit_everything();" id="submit"><b style="font-size: 2vh;">Submit Augmentation Settings</b></button>
+        </div>
+
+
+        <br><br>
+
+        <div id="copy_paste_div" style='display:none'>
+            <!--<input type="text" id="copy_paste_textbox">-->
+            <button type="submit" onclick="copy_paste_code_methods.copy_and_paste();">Copy and paste code</button>
+            <br>
+            <textarea id="code_block" name="code_block" rows="10" cols="10"></textarea>
+        </div>
+
+        <script src="{{url_for('static',filename='double_slider.js')}}"></script>
+        <script src="{{url_for('static',filename='Classification.js')}}"></script>
+        <!-- <script src="{{url_for('static',filename='Classification.js')}}"></script> -->
+        <script>disable_inputs();</script>
+    </div>
+    <a href='' id="download_tag" download onclick="close_download_tag();" style="font-size: 5vw;"></a>
+</body>
+
+</html>
