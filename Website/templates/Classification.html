@@ -25,8 +25,9 @@
     <img src="" id="test_image">
     <div id="upload_progress" style="display: none;">
         <!-- upload progress here -->
-        <label for="dataset_upload_progress">Uploading progress:</label>
-        <progress id="dataset_upload_progress" value="0" max="100">0%</progress>
+        <label for="dataset_upload_progress" style="font-size: 3vw;">Uploading progress:</label>
+        <progress id="dataset_upload_progress" value="0" max="100"
+            style="width:20vw;height: 5vh;vertical-align: middle;">0%</progress>
     </div>
     <div id="dropzone_buttons" style="font-size: 3vw;">
         <br>
@@ -35,29 +36,31 @@
         <input type="radio" id='folder' name="folder_or_zip" onclick="set_zip_or_folder_upload();"> <label
             for="folder">folder</label>
         <br>
-
         <div id='zip_upload_buttons'>
-            <form method="POST" action='/upload' class="dropzone dz-clickable" id="dropper"
-                enctype="multipart/form-data"
-                style="background-color: aliceblue; width: 30vw; height:10vw;text-align: top;overflow: hidden; font-size: 3vh;">
+            <form method="POST" action='/upload' class="dropzone" id="dropper" enctype="multipart/form-data" style="background-color: aliceblue;text-align: top;overflow: hidden; font-size: 3vw;width:20vw; height:20vw;display: flex;
+                justify-content: center; /* Horizontally center */
+                align-items: center; /* Vertically center */">
             </form>
         </div>
 
         <div id="folder_upload_buttons" style="display: none;">
-            <input id="design" type="file" webkitdirectory="true" directory style="display: none;" /><br>
-            <input type="button" id="select_folder" value="Select folder..." onclick="document.getElementById('design').click();"  style="width: 20vw;height: 4.5vh; font-size: 2vw; text-align: center;"/>
+            <input id="design" type="file" webkitdirectory="true" directory style="display: none;"
+                onchange="send_dataset();" /><br>
+            <input type="button" id="select_folder" value="Select folder..."
+                onclick="document.getElementById('design').click();"
+                style="width: 20vw;height: 4.5vh; font-size: 2vw; text-align: center;" />
         </div>
         <br>
-        <button id="submit_dropzone" onclick="send_dataset();" style="width: 10vw;height: 7vh;text-align: center; /* Centered text */" value="select folder"><b style="font-size: 2vw;">upload dataset</b></button>
+
     </div>
 
-    <div id="Pre-Proccessing" style="opacity: 25%; font-size: 3vw;">
+    <div id="Pre-Proccessing" style="opacity: 25%; font-size: 2vw;">
         <br>
         <h2>Pre-Proccessing Options</h2>
         <br>
 
         <label for="grayscale_preprocess">grayscale</label>
-        <input type="checkbox" id="grayscale_preprocess" style="width: 3vw;height: 3vh; vertical-align: center;">
+        <input type="checkbox" id="grayscale_preprocess">
         <br>
 
         <label for="resize_preprocess">resize</label>
@@ -68,7 +71,7 @@
 
 
     <br>
-    <div id='augmentation' style="opacity: 25%; font-size: 3vw;">
+    <div id='augmentation' style="opacity: 25%; font-size: 2vw;">
         <h2>Augmentations</h2>
         <!-- <label for="absolute_path">Image directory absolute path</label> -->
         <!-- <input type="text" id="absolute_path" name="absolute_path" placeholder="absolute path here"><br> -->
@@ -169,30 +172,31 @@
                 onclick="display_popups_methods.blur_click_checkbox();">
             <div id="blur_pop_up" style="display:none">
                 <label>enter blur limit</label>
-                <input id="blur_limit" type="range" min=".1" max="25" step=".1"
+                <input id="blur_limit" class="rangeInput" type="range" min=".1" max="25" step=".1"
                     oninput="range_input_methods.update_probabilities();" value="5">
                 <b id="show_blur_limit"></b> px
                 <br>
                 <div id="images-container">
                     <div class="img_div">
-                        <img src="" id="normal_sample_image" class="sample_image" style="max-width: 50vw;max-height: 25vh;">
+                        <img src="" id="normal_sample_image" class="sample_image">
                         <figcaption id=sample_limit_caption">0 px</figcaption>
                     </div>
- 
-                    <div class="img_div" style="max-width: 100%;">
-                        <img src="" id="blur_sample_image" class="sample_image" style="max-width: 50vw;max-height: 25vh;">
+
+                    <div class="img_div">
+                        <img src="" id="blur_sample_image" class="sample_image">
                         <figcaption id="blur_limit_caption">5</figcaption>
                     </div>
                 </div>
                 <br><br><br><br><br>
             </div>
         </div>
+        <br>
         <div style="display: flex;
         width: 100%;
         margin-top: 20px;">
-            <label for="Dataset Expansion Factor">Dataset Expansion Factor</label>
-            <select name="Dataset Expansion Facto" id="Dataset Expansion Factor"
-                style="width: 15vw; height: 5vh; font-size: 125%; vertical-align:middle;" disabled>
+            <label for="Expansion" style="vertical-align: middle;">Dataset Expansion Factor</label>
+            <select name="Dataset Expansion Factor" id="Expansion" disabled
+                style="text-align: center;vertical-align:-webkit-baseline-middle;">
                 <option value="2x">2x</option>
                 <option value="3x">3x</option>
                 <option value="4x">4x</option>
@@ -211,8 +215,9 @@
         </div>
 
 
-        <div id="button-container" style="right: -250px;">
-            <button type="submit" onclick="submit_everything();" id="submit"><b style="font-size: 2vh;">Submit Augmentation Settings</b></button>
+        <div id="button-container" style="right: 30%;">
+            <button type="submit" onclick="submit_everything();" id="submit"><b style="font-size: 3vw;">Submit
+                    Augmentation Settings</b></button>
         </div>
 
 
@@ -231,6 +236,7 @@
         <script>disable_inputs();</script>
     </div>
     <a href='' id="download_tag" download onclick="close_download_tag();" style="font-size: 5vw;"></a>
+
 </body>
 
 </html>

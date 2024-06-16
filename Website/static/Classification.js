@@ -1,7 +1,7 @@
 
 console.log(parseFloat(5).toFixed(1))
 let file_id = "id" + Math.random().toString(16).slice(2);
-let input_ids = ['Flip_check_box', '90° rotate_check_box', 'Crop_checkbox', 'grayscale_checkbox', 'Rotate_checkbox', 'blur_checkbox', 'Dataset Expansion Factor', 'grayscale_preprocess', 'resize_preprocess', 'submit'];
+let input_ids = ['Flip_check_box', '90° rotate_check_box', 'Crop_checkbox', 'grayscale_checkbox', 'Rotate_checkbox', 'blur_checkbox', 'Expansion', 'grayscale_preprocess', 'resize_preprocess', 'submit'];
 let sample_image_extension = 'none';
 console.log('JAVASCRIPT STARTED');
 let default_upload_option = 'zip'
@@ -39,8 +39,7 @@ function close_download_tag() {
 
 
 
-async function log_file_paths() {
-    document.getElementById('submit_dropzone').style.display = 'none';
+async function upload_folder() {
     document.getElementById('select_folder').style.display = 'none';
     let files = await document.getElementById('design').files
     let batch_size = 250;
@@ -49,8 +48,8 @@ async function log_file_paths() {
     responses = [];
     let last_upload = 'false';
     for (i = 0; i < chunks.length; i++) {
-        console.log('i:',i,'chunks length:',chunks.length);
-        last_upload = String((i+1)===chunks.length);
+        console.log('i:', i, 'chunks length:', chunks.length);
+        last_upload = String((i + 1) === chunks.length);
         let formData = new FormData();
         let chunk = chunks[i];
         let starting_index = 0;
@@ -67,10 +66,10 @@ async function log_file_paths() {
         else {
             formData.append('file', chunk[starting_index]);
         }
-        let aug_data = collect_aug_data();
+        let aug_data = collect_aug_data(); //collect aug data here
         formData.append('augmentations', aug_data);
         console.log('waiting for chunk ' + String(i + 1) + ' out of ' + num_chunks);
-        await fetch('/send_folder/' + file_id+'/'+last_upload, { body: formData, method: 'post' }).then(response => {
+        await fetch('/send_folder/' + file_id + '/' + last_upload, { body: formData, method: 'post' }).then(response => {
             const contentType = response.headers.get("content-type");
             if (contentType && contentType.indexOf("application/json") !== -1) {
                 return response.json().then(data => {
@@ -85,7 +84,7 @@ async function log_file_paths() {
                 });
             }
         });
-        let progress = (i+1) / num_chunks * 100;
+        let progress = (i + 1) / num_chunks * 100;
         document.getElementById('dataset_upload_progress').value = progress;
         // if (response_text_from_server !== 'none') {
         //     console.log(response_text_from_server,'download')
@@ -95,18 +94,18 @@ async function log_file_paths() {
     }
     console.log('finished');
     let valid_return_count = 0;
-    console.log('responses:',responses)
+    console.log('responses:', responses)
     for (i = 0; i < responses.length; i++) {
         let response = responses[i];
         if (response.includes('.')) {
-            console.log('i:',i)
+            console.log('i:', i)
             valid_return_count += 1;
             document.getElementById('dataset_upload_progress').value = 100
             document.getElementById('dropzone_buttons').style.display = 'none';
             document.getElementById('design').value = null;
             sample_image_extension = response;
             enable_inputs();
-            console.log('responses[i]:',sample_image_extension);
+            console.log('responses[i]:', sample_image_extension);
             //document.getElementById('test_image').src = responses[i];
             break;
         }
@@ -117,7 +116,6 @@ async function log_file_paths() {
         document.getElementById('dropzone_buttons').style.display = 'block';
         document.getElementById('upload_progress').style.display = 'none';
         document.getElementById('zip_upload_buttons').style.display = 'block';
-        document.getElementById('submit_dropzone').style.display = 'block';
 
         document.getElementById('select_folder').style.display = 'block';
         set_zip_or_folder_upload();
@@ -178,6 +176,24 @@ class display_popups {
         if (check_box.checked == true) {
             pop_up.style.display = 'block';
             console.log('checked checkbox');
+            let width = document.getElementById('blur_sample_image').width;
+            let height = document.getElementById('blur_sample_image').height;
+            console.log('width:', width);
+            console.log('height:', height);
+            if (width > height) {
+                document.getElementById('blur_sample_image').style.width = '20vw'
+                document.getElementById('normal_sample_image').style.width = '20vw'
+            }
+            else if(height > width) {
+                document.getElementById('blur_sample_image').style.height = '40vw'
+                document.getElementById('normal_sample_image').style.height = '40vw'
+            }
+            else{
+                document.getElementById('blur_sample_image').style.width = '20vw'
+                document.getElementById('normal_sample_image').style.width = '20vw'
+            }
+
+
         }
         if (check_box.checked == false) {
             pop_up.style.display = 'none';
@@ -274,7 +290,8 @@ let display_popups_methods = new display_popups();
 
 function reset_inputs() {
     for (i = 0; i < input_ids.length; i++) {
-        //children[i].disabled = true;
+        console.log(input_ids[i]);
+        // input_ids[i].disabled = true;
         document.getElementById(input_ids[i]).checked = false;
     }
     for (i = 0; i < pop_up_ids.length; i++) {
@@ -292,7 +309,6 @@ function disable_inputs() {
         input.disabled = true;
         document.getElementById('augmentation').style.opacity = '25%';
         document.getElementById('Pre-Proccessing').style.opacity = '25%';
-        document.getElementById('submit_dropzone').style.display = 'block';
         document.getElementById('select_folder').style.display = 'block';
     }
 }
@@ -314,13 +330,14 @@ function enable_inputs() {
         document.getElementById('dropzone_buttons').style.display = 'none';
     }
     let blur_slider = document.getElementById('blur_limit')
-    console.log('img extension:',sample_image_extension);
-    document.getElementById('blur_sample_image').src = 'static/'+file_id+'/'+'blur'+'/'+String((Number(blur_slider.value)).toFixed(1))+sample_image_extension
-    document.getElementById('normal_sample_image').src = 'static/'+file_id+'/'+'sample'+sample_image_extension
-    document.getElementById('blur_limit_caption').innerText = String(blur_slider.value)+'px'
+    console.log('img extension:', sample_image_extension);
+    document.getElementById('blur_sample_image').src = 'static/' + file_id + '/' + 'blur' + '/' + String((Number(blur_slider.value)).toFixed(1)) + sample_image_extension
+    console.log('width:', document.getElementById('blur_sample_image').width)
+    document.getElementById('normal_sample_image').src = 'static/' + file_id + '/' + 'sample' + sample_image_extension
+    document.getElementById('blur_limit_caption').innerText = String(blur_slider.value) + 'px'
     document.getElementById('show_blur_limit').innerText = blur_slider.value
-    console.log('normal src:',document.getElementById('normal_sample_image').src)
-    console.log('sample src:',document.getElementById('blur_sample_image').src)
+    console.log('normal src:', document.getElementById('normal_sample_image').src)
+    console.log('sample src:', document.getElementById('blur_sample_image').src)
 
 }
 
@@ -335,9 +352,9 @@ class range_input_scripts {
             let slider = document.getElementById(sliders[i]);
             let show_slider = document.getElementById(`show_${sliders[i]}`)
             show_slider.innerText = slider.value
-            if(sliders[i]==='blur_limit'){
-                document.getElementById('blur_sample_image').src = 'static/'+file_id+'/'+'blur'+'/'+String((Number(slider.value)).toFixed(1))+sample_image_extension
-                document.getElementById('blur_limit_caption').innerText = String(slider.value)+'px'
+            if (sliders[i] === 'blur_limit') {
+                document.getElementById('blur_sample_image').src = 'static/' + file_id + '/' + 'blur' + '/' + String((Number(slider.value)).toFixed(1)) + sample_image_extension
+                document.getElementById('blur_limit_caption').innerText = String(slider.value) + 'px'
             }
             i++
         }
@@ -443,10 +460,9 @@ Dropzone.options.dropper = {
             }
             if (data1 === 'none') {
                 console.log('no images found. invalid dataset')
-                document.getElementById('submit_dropzone').style.display = 'block';
                 alert('dataset invalid or no images found')
                 file_id = "id" + Math.random().toString(16).slice(2);
-                
+
             }
             else {
                 console.log('dataset uploaded successfully, valid')
@@ -464,7 +480,7 @@ Dropzone.options.dropper = {
         });
     },
 
-    maxFilesize: 100 * 1e+3, // MB 
+    maxFilesize: 100 * 1e+3, // MB (100 gb) 
     chunkSize: (1e+7), // bytes
     acceptedFiles: '.zip',
     maxFiles: 1,
@@ -502,7 +518,6 @@ function send_dataset() {
     if (default_upload_option === 'zip') {
         var dropzone = Dropzone.forElement('#dropper');
         if (dropzone.getQueuedFiles().length > 0) {
-            document.getElementById('submit_dropzone').style.display = 'none';
             document.getElementById('augmentation').style.opacity = '25%';
             document.getElementById('Pre-Proccessing').style.opacity = '25%';
             dropzone.processQueue();
@@ -513,7 +528,7 @@ function send_dataset() {
         if (document.getElementById('design').files.length > 0) {
             document.getElementById('upload_progress').style.display = 'block';
             document.getElementById('dropzone_buttons').style.display = 'none';
-            log_file_paths();
+            upload_folder();
         }
     }
     //TODO:add folder uploads by sending over individual files with paths instead of zip files

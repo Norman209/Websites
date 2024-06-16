@@ -1,14 +1,14 @@
 * {
-    padding: 0;
-    margin: 0;
-  }
-  
-  body {
-    padding: 25px;
-    font-size: 125%;
-  }
-  
-  /* span.value.upper::before {
+  padding: 0;
+  margin: 0;
+}
+
+body {
+  padding: 25px;
+  font-size: 125%;
+}
+
+/* span.value.upper::before {
     content: " - ";
     display: inline-block;
     margin-right: 0.4em;
@@ -25,48 +25,75 @@
     display: inline-block;
   }
    */
-  
-  
 
-  #submit {
-    width: 20vw;
-    height: 10vh;
-    background-color: lightgreen;
-    color: white;
-    border: none;
-    border-radius: 5px;
-    font-size: 18px;
-    cursor: pointer;
-    transition: background-color 0.3s ease;
+/* input[type="range"] {
+  width: 20vw;
+} */
+
+#submit {
+  width: 20vw;
+  height: 10vh;
+  background-color: lightgreen;
+  color: white;
+  border: none;
+  border-radius: 5px;
+  font-size: 18px;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
 }
 
 #dropzone_submit:hover {
-    background-color: limegreen;
+  background-color: limegreen;
 }
 
+/* input[type=checkbox] {
+  position: relative;
+  bottom: 1px;
+  width: 15vw;
+} */
 input[type="checkbox"] {
-  width: 3vw;
-  height: 3vh;
+  width: 2.5vw;
+  /* Default width */
+  vertical-align: middle;
+  height: 2.5vw;
+  /* Default height */
+  background-color: #fff;
+  border: 1px solid #ccc;
+  border-radius: 3px;
+  position: relative;
   cursor: pointer;
+  outline: none;
 }
-input[type="radio"] {
-  width: 3vw;
-  height: 3vh;
-  cursor: pointer;
-  vertical-align:middle;
+
+
+br {
+  display: block;
+  margin: 5vh 0;
 }
+
+input[type=radio] {
+  border: 0px;
+  height: 2.5vw;
+  /* Default height */
+  width: 2.5vw;
+  /* Default height */
+  vertical-align: middle;
+  position: relative;
+}
+
+
 
 select {
   width: 15vw;
-  height: 5vh;
+  height: 7vw;
   font-size: 125%;
   vertical-align: middle;
 }
 
-.dropzone .dz-preview .dz-image {
+/* .dropzone .dz-preview .dz-image {
   width: auto;
   height: auto;
-}
+} */
 
 
 
@@ -74,77 +101,195 @@ select {
 
 /* Specific styles for each header level */
 h1 {
-    font-size: 5vw; /* Larger font size for h1 */
-    font-weight: bold; /* Bold text */
-    color: #2c3e50; /* Slightly darker shade */
-    text-shadow: 1px 1px 2px #aaa; /* Subtle text shadow for depth */
+  font-size: 5vw;
+  /* Larger font size for h1 */
+  font-weight: bold;
+  /* Bold text */
+  color: #2c3e50;
+  /* Slightly darker shade */
+  text-shadow: 1px 1px 2px #aaa;
+  /* Subtle text shadow for depth */
 }
 
 
 
 h3 {
-    font-size: 1.5em; /* Smaller font size for h3 */
-    font-weight: normal; /* Normal weight */
-    color: black; /* Lighter shade */
-    background-color: #ecf0f1; /* Light background color */
-    padding: 1px; /* Padding around the header */
-    border-radius: 1px; /* Rounded corners */
-    display: inline-block; /* Only take up as much width as content */
-    box-shadow: 1px 1px 3px rgba(0, 0, 0, 0.1); /* Subtle box shadow */
+  font-size: 1.5em;
+  /* Smaller font size for h3 */
+  font-weight: normal;
+  /* Normal weight */
+  color: black;
+  /* Lighter shade */
+  background-color: #ecf0f1;
+  /* Light background color */
+  padding: 1px;
+  /* Padding around the header */
+  border-radius: 1px;
+  /* Rounded corners */
+  display: inline-block;
+  /* Only take up as much width as content */
+  box-shadow: 1px 1px 3px rgba(0, 0, 0, 0.1);
+  /* Subtle box shadow */
 }
 
 
 #button-container {
-    display: flex;
-    justify-content: center;
-    width: 100%;
-    margin-top: 20px;
+  display: flex;
+  justify-content: center;
+  width: 100%;
+  margin-top: 20px;
 }
+
 #dropper {
-    width: 500px;
-    justify-content: center;
+  width: 20vw;
+  height: 20vw;
+  justify-content: center;
 
 }
+
 .img_div {
   float: left;
   text-align: center;
 }
+
 #images-container figcaption {
   border: 1px solid blue;
   font-family: Verdana, Geneva, sans-serif;
-  font-size: 12px;
+  font-size: 3vw;
   text-shadow: none;
   color: black;
   text-align: center;
-  height: auto;
+  height: 5vw;
   word-wrap: break-word;
-  width:300px;
+  max-width: 50vw;
 }
 
-.min-max-slider {position: relative; width: 200px; text-align: center; margin-bottom: 50px;}
-.min-max-slider > label {display: none;}
-span.value {height: 1.7em; font-weight: bold; display: inline-block;}
-span.value.lower::after{content: "%-"; display: inline-block;}
-span.value.upper::after {content: "%"; display: inline-block; }
-.min-max-slider > .legend {display: flex; justify-content: space-between;}
-.min-max-slider > .legend > * {font-size: small; opacity: 0.25;}
-.min-max-slider > input {cursor: pointer; position: absolute;}
+
+
+.min-max-slider {
+  position: relative;
+  width: 200px;
+  text-align: center;
+  margin-bottom: 50px;
+}
+
+.min-max-slider>label {
+  display: none;
+}
+
+span.value {
+  height: 1.7em;
+  font-weight: bold;
+  display: inline-block;
+}
+
+span.value.lower::after {
+  content: "%-";
+  display: inline-block;
+}
+
+span.value.upper::after {
+  content: "%";
+  display: inline-block;
+}
+
+.min-max-slider>.legend {
+  display: flex;
+  justify-content: space-between;
+}
+
+.min-max-slider>.legend>* {
+  font-size: small;
+  opacity: 0.25;
+}
+
+.min-max-slider>input {
+  cursor: pointer;
+  position: absolute;
+}
 
 /* webkit specific styling */
-.min-max-slider > input {
+.min-max-slider>input {
   -webkit-appearance: none;
-  outline: none!important;
+  outline: none !important;
   background: transparent;
   background-image: linear-gradient(to bottom, transparent 0%, transparent 30%, silver 30%, silver 60%, transparent 60%, transparent 100%);
 }
-.min-max-slider > input::-webkit-slider-thumb {
-  -webkit-appearance: none; /* Override default look */
-  appearance: none;              
-  width: 14px; /* Set a specific slider handle width */
-  height: 14px; /* Slider handle height */
-  background: #eee; /* Green background */
-  cursor: pointer; /* Cursor on hover */
+
+.min-max-slider>input::-webkit-slider-thumb {
+  -webkit-appearance: none;
+  /* Override default look */
+  appearance: none;
+  width: 14px;
+  /* Set a specific slider handle width */
+  height: 14px;
+  /* Slider handle height */
+  background: #eee;
+  /* Green background */
+  cursor: pointer;
+  /* Cursor on hover */
   border: 1px solid gray;
   border-radius: 100%;
 }
-.min-max-slider > input::-webkit-slider-runnable-track {cursor: pointer;}
+
+.min-max-slider>input::-webkit-slider-runnable-track {
+  cursor: pointer;
+}
+
+
+
+
+
+
+/* Style for the range input */
+.rangeInput {
+  width: 20vw;
+  height: 1.5vw;
+  /* Increased height for a bigger bar */
+  -webkit-appearance: none;
+  background: lightslategrey;
+  outline: none;
+  opacity: 0.8;
+  -webkit-transition: .2s;
+  transition: opacity .2s;
+}
+
+/* Webkit browsers (Chrome, Safari, etc.) */
+.rangeInput::-webkit-slider-thumb {
+  -webkit-appearance: none;
+  appearance: none;
+  width: 10%;
+  /* Increased width for a bigger button */
+  height: 2vw;
+  /* Increased height for a bigger button */
+  background: blue;
+  cursor: pointer;
+  border-radius: 50%;
+  /* Makes the button round */
+}
+
+/* Firefox */
+.rangeInput::-moz-range-thumb {
+  width: 40px;
+  /* Increased width for a bigger button */
+  height: 40px;
+  /* Increased height for a bigger button */
+  background: #4CAF50;
+  cursor: pointer;
+  border-radius: 50%;
+  /* Makes the button round */
+}
+
+/* IE and Edge */
+.rangeInput::-ms-thumb {
+  width: 40px;
+  /* Increased width for a bigger button */
+  height: 40px;
+  /* Increased height for a bigger button */
+  background: #4CAF50;
+  cursor: pointer;
+  border-radius: 50%;
+  /* Makes the button round */
+}
+
+
